@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kompyuterlar | TechStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+        .navbar { background-color: #212529; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .comp-card { border-radius: 15px; transition: 0.3s; border: none; }
+        .comp-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .badge-year { font-size: 0.8rem; padding: 5px 10px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-microchip me-2 text-primary"></i>TechStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i> Bosh sahifa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active fw-bold text-primary" href="/comp/">
+                            <i class="fas fa-desktop me-1"></i> Kompyuterlar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/laptop/">
+                            <i class="fas fa-laptop me-1"></i> Noutbuklar
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold m-0"><i class="fas fa-desktop me-2 text-primary"></i>Statsionar Kompyuterlar</h2>
+            <a href="/comp/add/" class="btn btn-primary shadow-sm">
+                <i class="fas fa-plus me-1"></i> Yangi qo'shish
+            </a>
+        </div>
+
+        <hr class="mb-5">
+
+        <div class="row">
+            {% for c in computer %}
+            <div class="col-md-4 mb-4">
+                <div class="card comp-card shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="fw-bold m-0">{{ c.brand }}</h5>
+                                <small class="text-muted">{{ c.model }}</small>
+                            </div>
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle badge-year">
+                                {{ c.year }}
+                            </span>
+                        </div>
+                        <hr>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-microchip me-2 text-muted"></i><strong>CPU:</strong> {{ c.cpu }}</li>
+                            <li class="mb-2"><i class="fas fa-memory me-2 text-muted"></i><strong>RAM:</strong> {{ c.ram }} GB</li>
+                            <li class="mb-2"><i class="fas fa-tv me-2 text-muted"></i><strong>Monitor:</strong> {{ c.monitor }}</li>
+                            <li class="mb-2"><i class="fas fa-hdd me-2 text-muted"></i><strong>Disk:</strong> {{ c.disk }} GB</li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <h4 class="text-success m-0 fw-bold">{{ c.price }} $</h4>
+                            <button class="btn btn-outline-primary btn-sm px-3">Batafsil</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <p class="text-muted">Hozircha kompyuterlar mavjud emas.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

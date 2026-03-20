@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noutbuklar | TechStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar { background-color: #212529; }
+        .card { border-radius: 15px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/"><i class="fas fa-microchip me-2"></i>TechStore</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Bosh sahifa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/comp/">Kompyuterlar</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/laptop/">Noutbuklar</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold"><i class="fas fa-laptop me-2 text-primary"></i>Noutbuklar Ombori</h2>
+            <a href="/add-laptop/" class="btn btn-dark shadow-sm"><i class="fas fa-plus me-2"></i>Yangi Noutbuk</a>
+        </div>
+
+        <div class="card p-3">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Brend & Model</th>
+                            <th>Yili</th>
+                            <th>Xususiyatlari (CPU/RAM/Disk)</th>
+                            <th>Videokarta</th>
+                            <th class="text-end">Narxi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for l in laptop %}
+                        <tr>
+                            <td><strong>{{ l.brand }}</strong> <span class="text-muted">{{ l.model }}</span></td>
+                            <td><span class="badge bg-light text-dark border">{{ l.year }}</span></td>
+                            <td>
+                                <small class="text-muted">
+                                    <i class="fas fa-cpu me-1"></i>{{ l.cpu }} |
+                                    <i class="fas fa-memory me-1"></i>{{ l.ram }}GB |
+                                    <i class="fas fa-hdd me-1"></i>{{ l.disk }}GB
+                                </small>
+                            </td>
+                            <td><small>{{ l.videocard }}</small></td>
+                            <td class="text-end text-primary fw-bold">{{ l.price }} $</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
