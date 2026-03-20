@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ item.brand }} {{ item.model }} - Tafsilotlar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #f4f7f6; }
+        .info-card { border-radius: 20px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .spec-label { color: #6c757d; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; }
+        .spec-value { font-size: 1.1rem; color: #212529; font-weight: 500; }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info-card overflow-hidden">
+                    <div class="card-header bg-dark text-white p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2 class="m-0">{{ item.brand }} {{ item.model }}</h2>
+                            <span class="badge bg-primary fs-6">{{ type }}</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-5">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <p class="spec-label mb-1">Ishlab chiqarilgan yili</p>
+                                <p class="spec-value"><i class="far fa-calendar-alt me-2 text-primary"></i>{{ item.year }}-yil</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="spec-label mb-1">Narxi</p>
+                                <p class="spec-value text-success fs-3"><i class="fas fa-tag me-2"></i>{{ item.price }} $</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="spec-label mb-1">Protsessor (CPU)</p>
+                                <p class="spec-value"><i class="fas fa-microchip me-2 text-primary"></i>{{ item.cpu }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="spec-label mb-1">Operativ xotira (RAM)</p>
+                                <p class="spec-value"><i class="fas fa-memory me-2 text-primary"></i>{{ item.ram }} GB</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="spec-label mb-1">Doimiy xotira (Disk)</p>
+                                <p class="spec-value"><i class="fas fa-hdd me-2 text-primary"></i>{{ item.disk }} GB</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="spec-label mb-1">Videokarta</p>
+                                <p class="spec-value"><i class="fas fa-video me-2 text-primary"></i>{{ item.videocard }}</p>
+                            </div>
+
+                            {% if item.monitor %} <div class="col-md-12">
+                                <p class="spec-label mb-1">Monitor</p>
+                                <p class="spec-value"><i class="fas fa-desktop me-2 text-primary"></i>{{ item.monitor }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <hr class="my-4">
+                        <div class="d-flex gap-2">
+                            <a href="/" class="btn btn-outline-secondary px-4"><i class="fas fa-arrow-left me-2"></i>Orqaga</a>
+                            <button class="btn btn-primary px-4"><i class="fas fa-shopping-cart me-2"></i>Sotib olish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

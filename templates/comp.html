@@ -89,6 +89,9 @@
                 <p class="text-muted">Hozircha kompyuterlar mavjud emas.</p>
             </div>
             {% endfor %}
+            <a href="{% url 'delete_laptop' l.id %}" class="btn btn-sm btn-outline-danger">
+                <i class="fas fa-trash-alt"></i> O'chirish
+            </a>
         </div>
     </div>
 

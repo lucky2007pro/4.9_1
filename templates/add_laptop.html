@@ -51,6 +51,9 @@
                                     <input type="number" name="disk" class="form-control" required>
                                 </div>
                             </div>
+                            <a href="{% url 'delete_laptop' l.id %}" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash-alt"></i> O'chirish
+                            </a>
                             <div class="mt-4">
                                 <button type="submit" class="btn btn-dark w-100 py-2 fw-bold">Saqlash</button>
                                 <a href="/" class="btn btn-outline-secondary w-100 mt-2">Orqaga</a>

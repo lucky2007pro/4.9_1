@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Laptop
 # Create your views here.
 def laptop_list(request):
@@ -29,3 +29,14 @@ def add_laptop(request):
         return redirect('/')
 
     return render(request, 'add_laptop.html')
+
+def laptop_info(request, pk):
+    item = get_object_or_404(Laptop, pk=pk)
+    return render(request, 'info.html', {'item': item, 'type': 'Noutbuk'})
+
+def delete_laptop(request, pk):
+    laptop = get_object_or_404(Laptop, pk=pk)
+    if request.method == "POST":
+        laptop.delete()
+        return redirect('/')
+    return render(request, 'delete.html', {'item': laptop})
