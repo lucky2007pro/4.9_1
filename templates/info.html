@@ -2,70 +2,306 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>{{ item.brand }} {{ item.model }} - Tafsilotlar</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ item.brand }} {{ item.model }} | TechStore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #f4f7f6; }
-        .info-card { border-radius: 20px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .spec-label { color: #6c757d; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; }
-        .spec-value { font-size: 1.1rem; color: #212529; font-weight: 500; }
+        :root {
+            --bg: #080b10;
+            --bg2: #0d1117;
+            --bg3: #131920;
+            --border: rgba(255,255,255,0.07);
+            --border-bright: rgba(255,255,255,0.13);
+            --accent: #3b82f6;
+            --accent2: #60a5fa;
+            --accent-glow: rgba(59,130,246,0.18);
+            --green: #10b981;
+            --green-bg: rgba(16,185,129,0.1);
+            --text: #f1f5f9;
+            --text2: #94a3b8;
+            --text3: #475569;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text); min-height: 100vh;
+        }
+        body::before {
+            content: ''; position: fixed; top: -200px; left: -200px;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 65%);
+            pointer-events: none; z-index: 0;
+        }
+
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(8,11,16,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem; height: 64px;
+            display: flex; align-items: center;
+        }
+        .nav-inner {
+            max-width: 960px; width: 100%; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo {
+            display: flex; align-items: center; gap: 10px; text-decoration: none;
+            font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem;
+            color: var(--text); letter-spacing: -0.03em;
+        }
+        .logo-icon {
+            width: 32px; height: 32px; background: var(--accent);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 13px; box-shadow: 0 0 18px var(--accent-glow);
+        }
+        .back-link {
+            display: flex; align-items: center; gap: 6px;
+            text-decoration: none; font-size: 0.85rem;
+            color: var(--text2); transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--text); }
+
+        .wrapper {
+            max-width: 960px; margin: 0 auto;
+            padding: 2.5rem 2rem;
+            position: relative; z-index: 1;
+        }
+
+        /* HERO HEADER */
+        .detail-hero {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 32px 36px;
+            margin-bottom: 16px;
+            display: flex; align-items: flex-end; justify-content: space-between;
+            gap: 24px;
+            animation: fadeUp 0.4s ease both;
+        }
+        .hero-left .type-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 12px;
+            background: rgba(59,130,246,0.1);
+            color: var(--accent2);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 20px;
+            font-size: 0.75rem; font-weight: 500;
+            margin-bottom: 14px;
+        }
+        .hero-name {
+            font-family: 'Syne', sans-serif; font-size: 2.2rem;
+            font-weight: 800; letter-spacing: -0.04em;
+            line-height: 1.1;
+        }
+        .hero-name .brand { color: var(--text); }
+        .hero-name .model { color: var(--text2); }
+        .hero-meta {
+            display: flex; align-items: center; gap: 12px;
+            margin-top: 12px;
+        }
+        .meta-chip {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-bright);
+            border-radius: 6px; font-size: 0.78rem; color: var(--text3);
+        }
+        .hero-right { text-align: right; flex-shrink: 0; }
+        .price-label { font-size: 0.72rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+        .price-big {
+            font-family: 'Syne', sans-serif; font-size: 2.8rem;
+            font-weight: 800; letter-spacing: -0.05em;
+            color: var(--green);
+            line-height: 1;
+        }
+        .price-big span { font-size: 1.4rem; color: var(--text3); margin-left: 3px; }
+
+        /* SPECS GRID */
+        .specs-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 12px; margin-bottom: 16px;
+        }
+        .spec-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 22px;
+            display: flex; align-items: center; gap: 16px;
+            animation: fadeUp 0.4s ease both;
+        }
+        .spec-card:nth-child(1) { animation-delay: 0.05s; }
+        .spec-card:nth-child(2) { animation-delay: 0.1s; }
+        .spec-card:nth-child(3) { animation-delay: 0.15s; }
+        .spec-card:nth-child(4) { animation-delay: 0.2s; }
+        .spec-card:nth-child(5) { animation-delay: 0.25s; }
+        .spec-card.full { grid-column: 1 / -1; }
+        .spec-icon {
+            width: 40px; height: 40px; flex-shrink: 0;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+        }
+        .si-blue { background: rgba(59,130,246,0.12); color: var(--accent2); }
+        .si-green { background: rgba(16,185,129,0.12); color: var(--green); }
+        .si-purple { background: rgba(168,85,247,0.12); color: #c084fc; }
+        .si-orange { background: rgba(251,146,60,0.12); color: #fb923c; }
+        .si-teal { background: rgba(20,184,166,0.12); color: #2dd4bf; }
+        .spec-info .spec-key {
+            font-size: 0.72rem; color: var(--text3);
+            text-transform: uppercase; letter-spacing: 0.08em;
+            margin-bottom: 5px;
+        }
+        .spec-info .spec-val {
+            font-size: 1.05rem; font-weight: 500; color: var(--text);
+        }
+
+        /* ACTIONS */
+        .detail-actions {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 24px;
+            display: flex; align-items: center; gap: 12px;
+            animation: fadeUp 0.4s 0.3s ease both;
+        }
+        .btn-back {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text2);
+            font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 0.875rem;
+            border: 1px solid var(--border-bright); border-radius: 10px;
+            text-decoration: none; transition: all 0.2s;
+        }
+        .btn-back:hover { background: rgba(255,255,255,0.09); color: var(--text); }
+        .btn-buy {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 24px;
+            background: var(--green); color: #fff;
+            font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.875rem;
+            border: none; border-radius: 10px; cursor: pointer;
+            box-shadow: 0 0 20px rgba(16,185,129,0.2);
+            text-decoration: none; transition: all 0.2s;
+        }
+        .btn-buy:hover { background: #059669; transform: translateY(-1px); }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 680px) {
+            .detail-hero { flex-direction: column; align-items: flex-start; padding: 24px; }
+            .hero-right { text-align: left; }
+            .specs-grid { grid-template-columns: 1fr; }
+            .spec-card.full { grid-column: 1; }
+            .wrapper { padding: 1.5rem 1rem; }
+            nav { padding: 0 1rem; }
+        }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card info-card overflow-hidden">
-                    <div class="card-header bg-dark text-white p-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h2 class="m-0">{{ item.brand }} {{ item.model }}</h2>
-                            <span class="badge bg-primary fs-6">{{ type }}</span>
-                        </div>
-                    </div>
-                    <div class="card-body p-5">
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <p class="spec-label mb-1">Ishlab chiqarilgan yili</p>
-                                <p class="spec-value"><i class="far fa-calendar-alt me-2 text-primary"></i>{{ item.year }}-yil</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="spec-label mb-1">Narxi</p>
-                                <p class="spec-value text-success fs-3"><i class="fas fa-tag me-2"></i>{{ item.price }} $</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="spec-label mb-1">Protsessor (CPU)</p>
-                                <p class="spec-value"><i class="fas fa-microchip me-2 text-primary"></i>{{ item.cpu }}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="spec-label mb-1">Operativ xotira (RAM)</p>
-                                <p class="spec-value"><i class="fas fa-memory me-2 text-primary"></i>{{ item.ram }} GB</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="spec-label mb-1">Doimiy xotira (Disk)</p>
-                                <p class="spec-value"><i class="fas fa-hdd me-2 text-primary"></i>{{ item.disk }} GB</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="spec-label mb-1">Videokarta</p>
-                                <p class="spec-value"><i class="fas fa-video me-2 text-primary"></i>{{ item.videocard }}</p>
-                            </div>
 
-                            {% if item.monitor %} <div class="col-md-12">
-                                <p class="spec-label mb-1">Monitor</p>
-                                <p class="spec-value"><i class="fas fa-desktop me-2 text-primary"></i>{{ item.monitor }}</p>
-                            </div>
-                            {% endif %}
-                        </div>
+<nav>
+    <div class="nav-inner">
+        <a href="/" class="logo">
+            <div class="logo-icon"><i class="fas fa-microchip"></i></div>
+            TechStore
+        </a>
+        <a href="/" class="back-link">
+            <i class="fas fa-arrow-left" style="font-size:12px"></i> Orqaga
+        </a>
+    </div>
+</nav>
 
-                        <hr class="my-4">
-                        <div class="d-flex gap-2">
-                            <a href="/" class="btn btn-outline-secondary px-4"><i class="fas fa-arrow-left me-2"></i>Orqaga</a>
-                            <button class="btn btn-primary px-4"><i class="fas fa-shopping-cart me-2"></i>Sotib olish</button>
-                        </div>
-                    </div>
-                </div>
+<div class="wrapper">
+
+    <!-- Hero -->
+    <div class="detail-hero">
+        <div class="hero-left">
+            <div class="type-badge">
+                {% if type == "Kompyuter" %}
+                <i class="fas fa-desktop" style="font-size:11px"></i>
+                {% else %}
+                <i class="fas fa-laptop" style="font-size:11px"></i>
+                {% endif %}
+                {{ type }}
+            </div>
+            <div class="hero-name">
+                <span class="brand">{{ item.brand }}</span>
+                <span class="model"> {{ item.model }}</span>
+            </div>
+            <div class="hero-meta">
+                <span class="meta-chip">
+                    <i class="far fa-calendar-alt" style="font-size:10px"></i>
+                    {{ item.year }}-yil
+                </span>
+                <span class="meta-chip">
+                    <i class="fas fa-microchip" style="font-size:10px"></i>
+                    {{ item.cpu }}
+                </span>
             </div>
         </div>
+        <div class="hero-right">
+            <div class="price-label">Narxi</div>
+            <div class="price-big">{{ item.price }}<span>$</span></div>
+        </div>
     </div>
+
+    <!-- Specs -->
+    <div class="specs-grid">
+        <div class="spec-card">
+            <div class="spec-icon si-blue"><i class="fas fa-microchip"></i></div>
+            <div class="spec-info">
+                <div class="spec-key">Protsessor (CPU)</div>
+                <div class="spec-val">{{ item.cpu }}</div>
+            </div>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon si-purple"><i class="fas fa-memory"></i></div>
+            <div class="spec-info">
+                <div class="spec-key">Operativ xotira (RAM)</div>
+                <div class="spec-val">{{ item.ram }} GB</div>
+            </div>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon si-orange"><i class="fas fa-hdd"></i></div>
+            <div class="spec-info">
+                <div class="spec-key">Doimiy xotira (Disk)</div>
+                <div class="spec-val">{{ item.disk }} GB</div>
+            </div>
+        </div>
+        <div class="spec-card">
+            <div class="spec-icon si-green"><i class="fas fa-film"></i></div>
+            <div class="spec-info">
+                <div class="spec-key">Videokarta (GPU)</div>
+                <div class="spec-val">{{ item.videocard }}</div>
+            </div>
+        </div>
+        {% if item.monitor %}
+        <div class="spec-card full">
+            <div class="spec-icon si-teal"><i class="fas fa-desktop"></i></div>
+            <div class="spec-info">
+                <div class="spec-key">Monitor</div>
+                <div class="spec-val">{{ item.monitor }}</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Actions -->
+    <div class="detail-actions">
+        <a href="/" class="btn-back">
+            <i class="fas fa-arrow-left" style="font-size:12px"></i> Orqaga
+        </a>
+        <a href="#" class="btn-buy">
+            <i class="fas fa-shopping-cart" style="font-size:13px"></i> Sotib olish
+        </a>
+    </div>
+
+</div>
+
 </body>
 </html>

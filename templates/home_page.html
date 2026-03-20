@@ -3,118 +3,647 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechStore | Asosiy Sahifa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>TechStore | Ombor Boshqaruvi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #111118;
+            --surface2: #16161f;
+            --border: rgba(255,255,255,0.07);
+            --border-hover: rgba(255,255,255,0.15);
+            --accent: #4f6ef7;
+            --accent2: #7c3aed;
+            --accent-glow: rgba(79,110,247,0.25);
+            --text: #f0f0f5;
+            --text-muted: #6b6b80;
+            --text-dim: #9898ab;
+            --success: #10d9a0;
+            --success-bg: rgba(16,217,160,0.1);
+            --danger: #ff4d6a;
+            --danger-bg: rgba(255,77,106,0.1);
+            --gold: #f5c842;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', sans-serif;
-        }
-        .navbar { background-color: #212529; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .section-card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: none; margin-bottom: 30px; }
-
-        .badge-price {
-            font-size: 0.9rem;
-            padding: 6px 10px;
-            border-radius: 6px;
+            background: var(--bg);
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .btn-info-sm {
-            padding: 4px 12px;
+        /* Ambient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -200px;
+            left: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(79,110,247,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -200px;
+            right: -200px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ─── NAVBAR ─── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10,10,15,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+        .brand-icon {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: white;
+        }
+        .brand-dot {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 7px 14px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            letter-spacing: 0.01em;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text);
+            background: var(--surface2);
+        }
+
+        /* ─── MAIN LAYOUT ─── */
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem 4rem;
+        }
+
+        /* ─── HEADER ─── */
+        .page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.5s ease both;
+        }
+
+        .page-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: var(--text);
+            line-height: 1.1;
+        }
+        .page-title span {
+            background: linear-gradient(135deg, var(--accent), #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-subtitle {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'DM Sans', sans-serif;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 0 0 0 var(--accent-glow);
+        }
+        .btn-primary:hover {
+            background: #3d5de8;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+        .btn-ghost {
+            background: var(--surface2);
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover {
+            background: var(--surface);
+            color: var(--text);
+            border-color: var(--border-hover);
+        }
+
+        /* ─── STAT CARDS ─── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.5s 0.1s ease both;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 20px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .stat-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            border-radius: 14px 14px 0 0;
+        }
+        .stat-card.blue::before { background: linear-gradient(90deg, var(--accent), #7c3aed); }
+        .stat-card.green::before { background: linear-gradient(90deg, var(--success), #06b6d4); }
+        .stat-card.gold::before { background: linear-gradient(90deg, var(--gold), #f97316); }
+        .stat-card.red::before { background: linear-gradient(90deg, var(--danger), #f97316); }
+
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 0.85rem;
-            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+        .stat-card.blue .stat-icon { background: rgba(79,110,247,0.15); color: var(--accent); }
+        .stat-card.green .stat-icon { background: rgba(16,217,160,0.15); color: var(--success); }
+        .stat-card.gold .stat-icon { background: rgba(245,200,66,0.15); color: var(--gold); }
+        .stat-card.red .stat-icon { background: rgba(255,77,106,0.15); color: var(--danger); }
+
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        /* ─── SECTION ─── */
+        .section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            animation: fadeUp 0.5s 0.2s ease both;
+        }
+        .section:last-child { animation-delay: 0.3s; }
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .section-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+        }
+        .section-icon.blue { background: rgba(79,110,247,0.15); color: var(--accent); }
+        .section-icon.purple { background: rgba(124,58,237,0.15); color: #a78bfa; }
+
+        .section-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: var(--text);
+        }
+        .section-count {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            padding: 2px 9px;
+            border-radius: 20px;
+        }
+
+        /* ─── TABLE ─── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead th {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 12px 24px;
+            text-align: left;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+        }
+        thead th:last-child { text-align: right; }
+
+        tbody tr {
+            transition: background 0.15s;
+            border-bottom: 1px solid var(--border);
+        }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: rgba(255,255,255,0.025); }
+
+        td {
+            padding: 14px 24px;
+            font-size: 0.875rem;
+            color: var(--text-dim);
+            vertical-align: middle;
+        }
+        td.brand {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+        td.model { color: var(--text-dim); }
+        td.year {
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        td.actions {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* ─── INLINE ACTIONS ─── */
+        .action-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-detail {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .btn-detail:hover {
+            background: var(--surface2);
+            border-color: var(--border-hover);
+            color: var(--text);
+        }
+
+        .btn-delete {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-delete:hover {
+            background: var(--danger-bg);
+            border-color: rgba(255,77,106,0.3);
+            color: var(--danger);
+        }
+
+        .price-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 11px;
+            border-radius: 7px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: 'Syne', sans-serif;
+            letter-spacing: -0.01em;
+        }
+        .price-comp {
+            background: rgba(79,110,247,0.1);
+            color: #818cf8;
+            border: 1px solid rgba(79,110,247,0.2);
+        }
+        .price-laptop {
+            background: rgba(16,217,160,0.1);
+            color: var(--success);
+            border: 1px solid rgba(16,217,160,0.2);
+        }
+
+        /* ─── EMPTY STATE ─── */
+        .empty {
+            text-align: center;
+            padding: 48px 24px;
+        }
+        .empty-icon {
+            font-size: 2rem;
+            color: var(--text-muted);
+            opacity: 0.4;
+            margin-bottom: 12px;
+        }
+        .empty-text {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .page-header { flex-direction: column; gap: 16px; }
+            .header-actions { width: 100%; }
+            nav { padding: 0 1rem; }
+            .wrapper { padding: 1.5rem 1rem 3rem; }
+            .nav-links { display: none; }
+            td, th { padding: 12px 14px; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark mb-5">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/"><i class="fas fa-microchip me-2 text-primary"></i>TechStore</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="/">Bosh sahifa</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/comp/">Kompyuterlar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/laptop/">Noutbuklar</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<nav>
+    <a href="/" class="nav-brand">
+        <div class="brand-icon"><i class="fas fa-microchip"></i></div>
+        Tech<span class="brand-dot">Store</span>
+    </a>
+    <ul class="nav-links">
+        <li><a href="/" class="active">Bosh sahifa</a></li>
+        <li><a href="/comp/">Kompyuterlar</a></li>
+        <li><a href="/laptop/">Noutbuklar</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success);"></div>
+        <span style="font-size:0.78rem;color:var(--text-muted);">Tizim faol</span>
+    </div>
+</nav>
 
-    <div class="container">
-        <div class="row align-items-center mb-4">
-            <div class="col-md-6">
-                <h2 class="fw-bold text-dark m-0">OMBOR HOLATI</h2>
-                <p class="text-muted small">Mavjud texnikalar va boshqaruv</p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <a href="/comp/add/" class="btn btn-primary me-2"><i class="fas fa-desktop me-2"></i>Kompyuter +</a>
-                <a href="/add/" class="btn btn-dark"><i class="fas fa-laptop me-2"></i>Noutbuk +</a>
-            </div>
-        </div>
+<div class="wrapper">
 
-        <div class="section-card">
-            <h4 class="fw-bold mb-4 text-primary"><i class="fas fa-server me-2"></i>Statsionar Kompyuterlar</h4>
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead>
-                    <tr class="table-light">
-                        <th>Brend</th>
-                        <th>Model</th>
-                        <th class="text-center">Yil</th>
-                        <th class="text-end">Harakatlar</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for c in computer %}
-                    <tr>
-                        <td class="fw-bold">{{ c.brand }}</td>
-                        <td>{{ c.model }}</td>
-                        <td class="text-center">{{ c.year }}</td>
-                        <td class="text-end">
-                            <a href="{% url 'comp_info' c.id %}" class="btn btn-outline-primary btn-info-sm me-2">Batafsil</a>
-                            <span class="badge bg-success-subtle text-success border border-success-subtle badge-price">{{ c.price }} $</span>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+    <!-- Header -->
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Ombor <span>Boshqaruvi</span></h1>
+            <p class="page-subtitle">Mavjud texnikalar ro'yxati va inventarizatsiya</p>
         </div>
-
-        <div class="section-card">
-            <h4 class="fw-bold mb-4 text-dark"><i class="fas fa-laptop-code me-2"></i>Portativ Noutbuklar</h4>
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead>
-                    <tr class="table-light">
-                        <th>Brend</th>
-                        <th>Model</th>
-                        <th class="text-center">Yil</th>
-                        <th class="text-end">Harakatlar</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for l in laptop %}
-                    <tr>
-                        <td class="fw-bold text-uppercase">{{ l.brand }}</td>
-                        <td>{{ l.model }}</td>
-                        <td class="text-center">{{ l.year }}</td>
-                        <td class="text-end">
-                            <a href="{% url 'laptop_info' l.id %}" class="btn btn-outline-dark btn-info-sm me-2">Batafsil</a>
-                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle badge-price">{{ l.price }} $</span>
-                        </td>
-                    </tr>
-                    <a href="{% url 'delete_laptop' l.id %}" class="btn btn-sm btn-outline-danger">
-                        <i class="fas fa-trash-alt"></i> O'chirish
-                    </a>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        <div class="header-actions">
+            <a href="/comp/add/" class="btn btn-ghost">
+                <i class="fas fa-desktop" style="font-size:0.8rem;"></i>
+                Kompyuter +
+            </a>
+            <a href="{% url 'add_laptop' %}" class="btn btn-primary">
+                <i class="fas fa-laptop" style="font-size:0.8rem;"></i>
+                Noutbuk +
+            </a>
         </div>
     </div>
 
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-card blue">
+            <div class="stat-icon"><i class="fas fa-desktop"></i></div>
+            <div class="stat-value">{{ computer|length }}</div>
+            <div class="stat-label">Kompyuterlar</div>
+        </div>
+        <div class="stat-card green">
+            <div class="stat-icon"><i class="fas fa-laptop"></i></div>
+            <div class="stat-value">{{ laptop|length }}</div>
+            <div class="stat-label">Noutbuklar</div>
+        </div>
+        <div class="stat-card gold">
+            <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
+            <div class="stat-value">{{ computer|length|add:laptop|length }}</div>
+            <div class="stat-label">Jami texnika</div>
+        </div>
+        <div class="stat-card red">
+            <div class="stat-icon"><i class="fas fa-box-open"></i></div>
+            <div class="stat-value">—</div>
+            <div class="stat-label">Bugun qo'shildi</div>
+        </div>
+    </div>
+
+    <!-- Computers -->
+    <div class="section">
+        <div class="section-head">
+            <div class="section-title-wrap">
+                <div class="section-icon blue"><i class="fas fa-server"></i></div>
+                <span class="section-name">Statsionar Kompyuterlar</span>
+            </div>
+            <span class="section-count">{{ computer|length }} ta</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Brend</th>
+                    <th>Model</th>
+                    <th>Yil</th>
+                    <th style="text-align:right">Harakatlar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in computer %}
+                <tr>
+                    <td style="font-size:0.78rem;color:var(--text-muted);font-family:'Syne',sans-serif;width:40px;">{{ forloop.counter }}</td>
+                    <td class="brand">{{ c.brand }}</td>
+                    <td class="model">{{ c.model }}</td>
+                    <td class="year">{{ c.year }}</td>
+                    <td class="actions">
+                        <div class="action-group">
+                            <a href="{% url 'comp_info' c.id %}" class="btn-detail">
+                                <i class="fas fa-arrow-up-right-from-square" style="font-size:0.7rem;"></i>
+                                Batafsil
+                            </a>
+                            <a href="{% url 'delete_computer' c.id %}" class="btn-delete" title="O'chirish">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                            <span class="price-tag price-comp">{{ c.price }} $</span>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">
+                        <div class="empty">
+                            <div class="empty-icon"><i class="fas fa-desktop"></i></div>
+                            <p class="empty-text">Hozircha kompyuterlar yo'q</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Laptops -->
+    <div class="section">
+        <div class="section-head">
+            <div class="section-title-wrap">
+                <div class="section-icon purple"><i class="fas fa-laptop-code"></i></div>
+                <span class="section-name">Portativ Noutbuklar</span>
+            </div>
+            <span class="section-count">{{ laptop|length }} ta</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Brend</th>
+                    <th>Model</th>
+                    <th>Yil</th>
+                    <th style="text-align:right">Harakatlar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for l in laptop %}
+                <tr>
+                    <td style="font-size:0.78rem;color:var(--text-muted);font-family:'Syne',sans-serif;width:40px;">{{ forloop.counter }}</td>
+                    <td class="brand">{{ l.brand }}</td>
+                    <td class="model">{{ l.model }}</td>
+                    <td class="year">{{ l.year }}</td>
+                    <td class="actions">
+                        <div class="action-group">
+                            <a href="{% url 'laptop_info' l.id %}" class="btn-detail">
+                                <i class="fas fa-arrow-up-right-from-square" style="font-size:0.7rem;"></i>
+                                Batafsil
+                            </a>
+                            <a href="{% url 'delete_laptop' l.id %}" class="btn-delete" title="O'chirish">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                            <span class="price-tag price-laptop">{{ l.price }} $</span>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">
+                        <div class="empty">
+                            <div class="empty-icon"><i class="fas fa-laptop"></i></div>
+                            <p class="empty-text">Hozircha noutbuklar yo'q</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
 </body>
 </html>

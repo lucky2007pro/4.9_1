@@ -4,66 +4,357 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Noutbuklar | TechStore</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #f8f9fa; }
-        .navbar { background-color: #212529; }
-        .card { border-radius: 15px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        :root {
+            --bg: #080b10;
+            --bg2: #0d1117;
+            --bg3: #131920;
+            --border: rgba(255,255,255,0.07);
+            --border-bright: rgba(255,255,255,0.13);
+            --accent: #10b981;
+            --accent2: #34d399;
+            --accent-glow: rgba(16,185,129,0.16);
+            --blue: #3b82f6;
+            --blue2: #60a5fa;
+            --red: #ef4444;
+            --red-bg: rgba(239,68,68,0.1);
+            --text: #f1f5f9;
+            --text2: #94a3b8;
+            --text3: #475569;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text); min-height: 100vh;
+        }
+        body::before {
+            content: ''; position: fixed; bottom: -200px; right: -200px;
+            width: 650px; height: 650px;
+            background: radial-gradient(circle, rgba(16,185,129,0.05) 0%, transparent 65%);
+            pointer-events: none; z-index: 0;
+        }
+
+        /* NAV */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(8,11,16,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem; height: 64px;
+            display: flex; align-items: center;
+        }
+        .nav-inner {
+            max-width: 1300px; width: 100%; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo {
+            display: flex; align-items: center; gap: 10px; text-decoration: none;
+            font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem;
+            color: var(--text); letter-spacing: -0.03em;
+        }
+        .logo-icon {
+            width: 32px; height: 32px; background: var(--blue);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 13px; box-shadow: 0 0 18px rgba(59,130,246,0.25);
+        }
+        .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+        .nav-links a {
+            display: block; padding: 6px 14px; text-decoration: none;
+            font-size: 0.85rem; color: var(--text2);
+            border-radius: 8px; transition: all 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+        .nav-links a.active { color: var(--accent2); background: rgba(16,185,129,0.08); }
+
+        /* LAYOUT */
+        .container {
+            max-width: 1300px; margin: 0 auto;
+            padding: 2.5rem 2rem;
+            position: relative; z-index: 1;
+        }
+
+        /* PAGE HEADER */
+        .page-header {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            margin-bottom: 2rem; padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .page-title .eyebrow {
+            font-size: 0.72rem; color: var(--text3); text-transform: uppercase;
+            letter-spacing: 0.1em; margin-bottom: 8px;
+        }
+        .page-title h1 {
+            font-family: 'Syne', sans-serif; font-size: 1.8rem;
+            font-weight: 800; letter-spacing: -0.04em;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .title-icon {
+            width: 42px; height: 42px; border-radius: 11px;
+            background: rgba(16,185,129,0.12); color: var(--accent2);
+            display: flex; align-items: center; justify-content: center; font-size: 17px;
+        }
+        .btn-add {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 20px;
+            background: var(--accent); color: #fff;
+            font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.875rem;
+            border: none; border-radius: 11px; cursor: pointer;
+            box-shadow: 0 0 22px var(--accent-glow);
+            text-decoration: none; transition: all 0.2s;
+        }
+        .btn-add:hover { background: #059669; transform: translateY(-1px); }
+
+        /* TABLE CARD */
+        .table-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            animation: fadeUp 0.4s ease both;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        thead tr { background: rgba(255,255,255,0.02); }
+        th {
+            padding: 12px 20px;
+            font-size: 0.7rem; font-weight: 500;
+            color: var(--text3); text-transform: uppercase;
+            letter-spacing: 0.09em; text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th.right { text-align: right; }
+        th.center { text-align: center; }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
+        }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: rgba(255,255,255,0.025); }
+
+        td {
+            padding: 14px 20px;
+            font-size: 0.875rem;
+            color: var(--text); vertical-align: middle;
+        }
+        td.center { text-align: center; }
+        td.right { text-align: right; }
+
+        /* INDEX cell */
+        .row-index {
+            font-size: 0.78rem; color: var(--text3);
+            font-weight: 500; font-family: 'DM Sans', sans-serif;
+        }
+
+        /* BRAND cell */
+        .brand-cell { display: flex; align-items: center; gap: 12px; }
+        .brand-avatar {
+            width: 36px; height: 36px; border-radius: 9px;
+            background: var(--bg3);
+            border: 1px solid var(--border-bright);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; color: var(--text2);
+            text-transform: uppercase; flex-shrink: 0;
+        }
+        .brand-name { font-weight: 500; color: var(--text); font-size: 0.9rem; }
+        .brand-model { font-size: 0.78rem; color: var(--text3); margin-top: 2px; }
+
+        /* YEAR cell */
+        .year-pill {
+            display: inline-block; padding: 3px 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-bright);
+            border-radius: 20px; font-size: 0.78rem; color: var(--text3);
+        }
+
+        /* SPECS cell */
+        .spec-line {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.8rem; color: var(--text2); margin-bottom: 4px;
+        }
+        .spec-line:last-child { margin-bottom: 0; }
+        .spec-line i { width: 13px; text-align: center; font-size: 10px; color: var(--text3); }
+        .spec-chips {
+            display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+        }
+        .spec-chip {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 5px; font-size: 0.75rem; color: var(--text3);
+        }
+        .spec-chip i { font-size: 9px; }
+
+        /* PRICE badge */
+        .price-badge {
+            display: inline-flex; align-items: center; gap: 3px;
+            padding: 5px 12px; border-radius: 8px;
+            font-family: 'Syne', sans-serif; font-size: 0.88rem; font-weight: 700;
+            letter-spacing: -0.01em;
+            background: var(--accent-glow);
+            color: var(--accent2);
+            border: 1px solid rgba(16,185,129,0.2);
+        }
+
+        /* ACTION buttons */
+        .actions { display: flex; align-items: center; justify-content: flex-end; gap: 7px; }
+        .btn-detail {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 6px 13px;
+            background: rgba(59,130,246,0.08);
+            color: var(--blue2);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 8px; font-size: 0.8rem; font-weight: 500;
+            text-decoration: none; transition: all 0.2s;
+        }
+        .btn-detail:hover { background: rgba(59,130,246,0.16); }
+        .btn-delete {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px;
+            background: var(--red-bg); color: var(--red);
+            border: 1px solid rgba(239,68,68,0.2);
+            border-radius: 8px; text-decoration: none;
+            font-size: 12px; transition: all 0.2s; flex-shrink: 0;
+        }
+        .btn-delete:hover { background: rgba(239,68,68,0.2); }
+
+        /* EMPTY */
+        .empty-row td {
+            text-align: center; padding: 52px 20px;
+        }
+        .empty-icon {
+            font-size: 2.5rem; color: var(--text3);
+            margin-bottom: 12px; opacity: 0.3;
+        }
+        .empty-row p { font-size: 0.875rem; color: var(--text3); }
+
+        /* FOOTER LINK */
+        .footer-back {
+            margin-top: 1.5rem; text-align: center;
+        }
+        .footer-back a {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.82rem; color: var(--text3);
+            text-decoration: none; transition: color 0.2s;
+        }
+        .footer-back a:hover { color: var(--text2); }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .page-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .btn-add { width: 100%; justify-content: center; }
+            nav { padding: 0 1rem; }
+            .container { padding: 1.5rem 1rem; }
+            .nav-links { display: none; }
+            th.hide-sm, td.hide-sm { display: none; }
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/"><i class="fas fa-microchip me-2"></i>TechStore</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="/">Bosh sahifa</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/comp/">Kompyuterlar</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/laptop/">Noutbuklar</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold"><i class="fas fa-laptop me-2 text-primary"></i>Noutbuklar Ombori</h2>
-            <a href="/add-laptop/" class="btn btn-dark shadow-sm"><i class="fas fa-plus me-2"></i>Yangi Noutbuk</a>
-        </div>
-
-        <div class="card p-3">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Brend & Model</th>
-                            <th>Yili</th>
-                            <th>Xususiyatlari (CPU/RAM/Disk)</th>
-                            <th>Videokarta</th>
-                            <th class="text-end">Narxi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for l in laptop %}
-                        <tr>
-                            <td><strong>{{ l.brand }}</strong> <span class="text-muted">{{ l.model }}</span></td>
-                            <td><span class="badge bg-light text-dark border">{{ l.year }}</span></td>
-                            <td>
-                                <small class="text-muted">
-                                    <i class="fas fa-cpu me-1"></i>{{ l.cpu }} |
-                                    <i class="fas fa-memory me-1"></i>{{ l.ram }}GB |
-                                    <i class="fas fa-hdd me-1"></i>{{ l.disk }}GB
-                                </small>
-                            </td>
-                            <td><small>{{ l.videocard }}</small></td>
-                            <td class="text-end text-primary fw-bold">{{ l.price }} $</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<nav>
+    <div class="nav-inner">
+        <a href="/" class="logo">
+            <div class="logo-icon"><i class="fas fa-microchip"></i></div>
+            TechStore
+        </a>
+        <ul class="nav-links">
+            <li><a href="/">Bosh sahifa</a></li>
+            <li><a href="/comp/">Kompyuterlar</a></li>
+            <li><a href="/laptop/" class="active">Noutbuklar</a></li>
+        </ul>
     </div>
+</nav>
+
+<div class="container">
+
+    <div class="page-header">
+        <div class="page-title">
+            <div class="eyebrow">Ombor ro'yxati</div>
+            <h1>
+                <div class="title-icon"><i class="fas fa-laptop-code"></i></div>
+                Portativ Noutbuklar
+            </h1>
+        </div>
+        <a href="{% url 'add_laptop' %}" class="btn-add">
+            <i class="fas fa-plus" style="font-size:11px"></i> Yangi Noutbuk
+        </a>
+    </div>
+
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:44px">#</th>
+                    <th>Brend / Model</th>
+                    <th class="center hide-sm" style="width:90px">Yil</th>
+                    <th class="hide-sm">Xususiyatlar</th>
+                    <th class="right">Harakatlar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for l in laptop %}
+                <tr>
+                    <td><span class="row-index">{{ forloop.counter }}</span></td>
+                    <td>
+                        <div class="brand-cell">
+                            <div class="brand-avatar">{{ l.brand|slice:":2" }}</div>
+                            <div>
+                                <div class="brand-name">{{ l.brand }}</div>
+                                <div class="brand-model">{{ l.model }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="center hide-sm">
+                        <span class="year-pill">{{ l.year }}</span>
+                    </td>
+                    <td class="hide-sm">
+                        <div class="spec-line">
+                            <i class="fas fa-microchip"></i>
+                            <span>{{ l.cpu }}</span>
+                        </div>
+                        <div class="spec-chips">
+                            <span class="spec-chip"><i class="fas fa-memory"></i> {{ l.ram }} GB RAM</span>
+                            <span class="spec-chip"><i class="fas fa-hdd"></i> {{ l.disk }} GB</span>
+                        </div>
+                    </td>
+                    <td class="right">
+                        <div class="actions">
+                            <span class="price-badge">{{ l.price }} $</span>
+                            <a href="{% url 'laptop_info' l.id %}" class="btn-detail">
+                                <i class="fas fa-eye" style="font-size:10px"></i> Ko'rish
+                            </a>
+                            <a href="{% url 'delete_laptop' l.id %}" class="btn-delete" title="O'chirish">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr class="empty-row">
+                    <td colspan="5">
+                        <div class="empty-icon"><i class="fas fa-laptop"></i></div>
+                        <p>Noutbuklar topilmadi.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-back">
+        <a href="/">
+            <i class="fas fa-arrow-left" style="font-size:11px"></i> Bosh sahifaga qaytish
+        </a>
+    </div>
+
+</div>
+
 </body>
 </html>
